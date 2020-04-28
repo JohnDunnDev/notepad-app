@@ -1,3 +1,4 @@
+// v0.1
 // Declare elements
 const container = document.getElementById('container');
 const sidebar = document.getElementById('sidebar');
