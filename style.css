@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Hind', sans-serif;
+}
+
+:root {
+  --background-color: #EEE;
+  --font-color: #000;
+  --toolbar-color: rgba(251, 197, 49, 0.8);
+  --accent: rgb(181, 136, 13);
+  --tooltip-background: #333;
+}
+
+.darkMode {
+  --background-color: #222;
+  --font-color: #EEE;
+  --toolbar-color: rgba(251, 197, 49,0.8);
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  background: var(--background-color);
+  color: var(--font-color);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+}
+
+.sidebar {
+  height: 100vh;
+  width: 11rem;
+  position: relative;
+  transform: translateX(0);
+  border-right: 3px solid var(--accent);
+  transition: 
+    opacity .5s,
+    width 1s,
+    height 1s,
+    transform .5s;
+}
+
+.toolbar {
+  height: 3rem;
+  width: 100%;
+  background: var(--toolbar-color);
+  display: flex;
+  justify-content: space-around;
+  
+  border-bottom: 3px solid var(--accent);
+}
+
+/* --- BUTTON STYLES BEGIN --- */
+.btn {
+  position: relative;
+  top: 1vh;
+  height: 2rem;
+  width: 2rem;
+}
+.btn svg {
+  height: 1.5rem;
+  width: 1.25rem;
+  transform: translateX(-.25rem);
+}
+
+/* Tooltip styles */
+.btn .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background: var(--tooltip-background);
+  color: white;
+  text-align: center;
+  padding: 2px 0;
+  border-radius: 6px;
+  
+  position: absolute;
+  z-index: 99;
+  transform: translate(1rem, -1.9rem);
+  
+  opacity: 0;
+  transition: opacity .3s;
+}
+.btn .tooltiptext::before {
+  content: '';
+  position: absolute;
+  transform: translate(-2.45rem, .4rem);
+  
+  z-index: 99;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent var(--tooltip-background) transparent transparent;
+}
+.btn:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+/* --- BUTTON STYLES END */
+
+/* --- NOTES LIST STYLES BEGIN */
+
+.notes-list {
+  position: relative;
+  height: 90%;
+  width: 100%;
+  transform: translateX(-2.75rem);
+  
+  list-style: none;
+  margin: 1rem;
+  opacity: 1;
+  
+  transition: 
+    height 1s,
+    opacity 1s;
+  transition-delay: .5s;
+}
+
+.notes-item {
+  cursor: pointer;
+  opacity: 0.5;
+}
+.notes-item:hover {
+  opacity: 0.9;
+}
+
+.notes-item-selected {
+  opacity: 1;
+}
+
+.notes-item::before {
+  content: '';
+  position: absolute;
+  transform: translate(-.3rem, 2px);
+  
+  height: 1rem;
+  width: 2px;
+  background-color: var(--accent);
+  opacity: 0;
+}
+.notes-item:hover:before {
+  opacity: 1;
+}
+
+/* --- NOTES LIST STYLES END */
+
+.input-area {
+  height: 100vh;
+  width: 80vw;
+  left: 0;
+  background: var(--background-color);
+  color: var(--font-color);
+  border: none;
+  
+  transition: 
+    transform .5s, 
+    width .5s;
+}
+
+.btn-hide {
+  display: none;
+}
+
+/* classes to hide sidebar */
+
+.sidebar-hide {
+  transform: translateX(-8rem);
+  height: 3rem;
+  opacity: 0;
+  z-index: 99;
+  transition: 
+    opacity .5s, 
+    transform .5s;
+}
+
+.sidebar-hide:hover {
+  opacity: 1;
+  transition-delay: .2s;
+}
+
+.notes-list-hide {
+  height: 0;
+  opacity: 0;
+}
+
+.enlarge-input-area {
+  transform: translateX(-7.5rem);
+  width: 90vw;
+  transition-delay: .2s;
+}
