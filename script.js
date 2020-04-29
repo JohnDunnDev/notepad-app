@@ -1,4 +1,4 @@
-// v0.1
+// App v0.1, JS v0.2
 // Declare elements
 const container = document.getElementById('container');
 const sidebar = document.getElementById('sidebar');
@@ -55,6 +55,8 @@ darkModeOnButton.addEventListener('click', darkModeToggle);
 
 const darkModeOffButton = document.getElementById('dark-mode-off-btn');
 darkModeOffButton.addEventListener('click', darkModeToggle);
+// Hide darkModeOffButton on load
+darkModeOffButton.classList.add('btn-hide');
 
 var darkModeStatus = false;
 
@@ -64,6 +66,8 @@ minimiseButton.addEventListener('click', hideSidebar);
 
 const maximiseButton = document.getElementById('maximise-btn');
 maximiseButton.addEventListener('click', hideSidebar);
+// Hide maximiseButton on load
+maximiseButton.classList.add('btn-hide');
 
 var minimiseStatus = false;
 
@@ -99,7 +103,7 @@ document.addEventListener('keydown', function(event) {
     }
              }
   else {
-    // if key isn't Ctrl or Alt, do nothing
+    // If key isn't Ctrl or Alt, do nothing
     return;
   }
 });
@@ -110,10 +114,11 @@ function deleteNote() {
   let deleteConfirmation = confirm('Are you sure you would like to delete this note?');
   
   if (deleteConfirmation) {
-    // remove from local storage
+    // Remove from local storage
   localStorage.removeItem(currentNoteName);
-  // remove from list
-  notesList.removeChild(currentNoteName);
+  // Remove from list
+  let liToDelete = document.querySelector('.notes-item-selected');
+  notesList.removeChild(liToDelete);
 
   currentNoteName = '';
   currentNoteText = '';
@@ -123,37 +128,41 @@ function deleteNote() {
 };
 
 function createNote() {
-  // save current note first
+  // Save current note first
   saveNote();
-  //create new note
+  // Create new note
   let newNoteName = prompt('Enter a title', 'New note');
   if (newNoteName == null || newNoteName == '') {
     alert('New note name cannot be blank');
     saveNote();
   } else {
+    // Remove selected class from previous note
+    for (let i = 0; i < notesItems.length; i++) {
+      notesItems[i].classList.remove('notes-item-selected');
+    }
+    // Create new note in list
     const newNote = document.createElement('li');
     newNote.innerText = newNoteName;
     newNote.classList.add('notes-item' + 'notes-item-selected');
     newNote.setAttribute("onclick", "selectNote()");
-    console.log(newNote.innerHTML);
     
     notesList.appendChild(newNote);
     
+    // Create item in local storage and set 'current' variables
     localStorage.setItem(newNoteName, defaultStr);
     currentNoteName = newNoteName;
     currentNoteText = localStorage.getItem(currentNoteName);
     
     inputArea.innerHTML = defaultStr;
   }
-  
 };
 
 function saveNote() {
   // Check if current text is different from local storage before prompt
-  if (inputArea.innerHTML != localStorage.getItem(currentNoteName)) {
+  if (inputArea.innerHTML !== localStorage.getItem(currentNoteName)) {
     let saveConfirmation = confirm('Save current note?');
     if (saveConfirmation) {
-      localStorage.setItem(currentNoteName, inputArea.innerHTML);
+      localStorage.currentNoteName = inputArea.innerHTML;
     } else {
       return;
     }
@@ -207,18 +216,17 @@ function hideSidebar() {
 
 // handle picking new note
 function selectNote() {
-  // check if user wants to save current note first
-  if (currentNoteName != '') {
-    saveNote();
-  }
-  // remove 'selected' class from current note then add to new
+  // Check if user wants to save current note first
+  saveNote();
+  // Remove 'selected' class from old note then add to current
   for (let i = 0; i < notesItems.length; i++) {
     notesItems[i].classList.remove('notes-item-selected');
-  }
+  };
+
   let selectedNote = event.target;
   selectedNote.classList.add('notes-item-selected');
-  // grab note from local storage
+  // Select and display note from local storage
   currentNoteName = event.target.innerText;
   currentNoteText = localStorage.getItem(currentNoteName);
-  inputArea.innerText = currentNoteText;
+  inputArea.innerHTML = currentNoteText;
 };
